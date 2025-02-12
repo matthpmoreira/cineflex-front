@@ -6,6 +6,7 @@ import Display from "./components/Display.jsx";
 import Header from "./components/Header.jsx";
 import Seats from "./components/Seats.jsx";
 import Sessions from "./components/Sessions.jsx";
+import StackedSelection from "./components/StackedSelection.jsx";
 import Success from "./components/Success.jsx";
 
 export default function App() {
@@ -75,6 +76,7 @@ export default function App() {
                             </h1>
                         }
                     />
+                    <Route path="/new" element={<StackedSelection />} />
                 </Routes>
             </Main>
         </BrowserRouter>
