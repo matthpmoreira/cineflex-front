@@ -1,18 +1,16 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+
+import { fetchSeats } from "../utils/backend.js";
 
 export default function SeatGrid({ toggleSelectedSeat }) {
     const { movieId, sessionId } = useParams();
     const [seats, setSeats] = useState(null);
 
     useEffect(() => {
-        axios
-            .get("https://cineflex-back.onrender.com/movies/" + movieId + "/sessions/" + sessionId + "/seats")
-            .then(res => setSeats(res.data))
-            .catch(err => console.log(err));
-    }, []);
+        fetchSeats(movieId, sessionId).then(res => setSeats(res.data));
+    }, [movieId, sessionId]);
 
     return (
         <Wrapper>

@@ -1,17 +1,14 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import { fetchMovies } from "../utils/backend.js";
 import Poster from "./Poster.jsx";
 
 export default function Display({ setMovieTitle, cleanState }) {
     const [movies, setMovies] = useState(null);
 
     useEffect(() => {
-        axios
-            .get("https://cineflex-back.onrender.com")
-            .then(res => setMovies(res.data))
-            .catch(err => console.log(err));
+        fetchMovies().then(res => setMovies(res.data));
     }, []);
 
     useEffect(() => cleanState("movie"), []);

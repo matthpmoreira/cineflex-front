@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
+import { fetchSessions } from "../utils/backend.js";
 import Screening from "./Screening.jsx";
 
 export default function Sessions({ setSessionInfo, cleanState }) {
@@ -10,11 +10,8 @@ export default function Sessions({ setSessionInfo, cleanState }) {
     const [sessions, setSessions] = useState(null);
 
     useEffect(() => {
-        axios
-            .get("https://cineflex-back.onrender.com/movies/" + movieId + "/sessions")
-            .then(res => setSessions(res.data))
-            .catch(err => console.log(err));
-    }, []);
+        fetchSessions(movieId).then(res => setSessions(res.data));
+    }, [movieId]);
 
     useEffect(() => cleanState("session"), []);
 
