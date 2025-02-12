@@ -17,15 +17,28 @@ export default function Form({ setPersonalInfo }) {
         <FormWrapper onSubmit={submit}>
             <InputWrapper>
                 <Label htmlFor="name">Nome do comprador(a)</Label>
-                <Input onChange={e => setName(e.target.value)} id="name" type="text" placeholder="Digite seu nome..." required />
+                <Input
+                    onChange={e => setName(e.target.value)}
+                    id="name"
+                    type="text"
+                    placeholder="Digite seu nome..."
+                    required
+                />
             </InputWrapper>
             <InputWrapper>
                 <Label htmlFor="cpf">CPF do comprador(a)</Label>
-                <Input onChange={e => setCpf(e.target.value)} id="cpf" type="text" placeholder="Digite seu CPF..." pattern="[0-9]{3}.{0,1}[0-9]{3}.{0,1}[0-9]{3}-{0,1}[0-9]{2}" required />
+                <Input
+                    onChange={e => setCpf(e.target.value)}
+                    id="cpf"
+                    type="text"
+                    placeholder="Digite seu CPF..."
+                    pattern="[0-9]{3}.{0,1}[0-9]{3}.{0,1}[0-9]{3}-{0,1}[0-9]{2}"
+                    required
+                />
             </InputWrapper>
             <Submit>Reservar assento(s)</Submit>
         </FormWrapper>
-    )
+    );
 }
 
 const FormWrapper = styled.form`
@@ -33,9 +46,9 @@ const FormWrapper = styled.form`
     flex-direction: column;
     align-items: fill;
     gap: 1em;
-`
+`;
 
-const InputWrapper = styled.div``
+const InputWrapper = styled.div``;
 
 const Label = styled.label`
     display: block;
@@ -43,7 +56,7 @@ const Label = styled.label`
 
     color: white;
     font-family: "Sarala", sans-serif;
-`
+`;
 
 const Input = styled.input`
     display: block;
@@ -56,7 +69,7 @@ const Input = styled.input`
         color: #afafaf;
         font-style: italic;
     }
-`
+`;
 
 const Submit = styled.button`
     background: #ee897f;
@@ -68,4 +81,4 @@ const Submit = styled.button`
     color: #2b2d36;
     font-size: 18px;
     font-weight: bold;
-`
+`;

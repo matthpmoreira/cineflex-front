@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import Header from "./components/Header.jsx";
-import Display from "./components/Display.jsx";
-import Sessions from "./components/Sessions.jsx";
-import Seats from "./components/Seats.jsx";
-import Success from "./components/Success.jsx";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
+
+import Display from "./components/Display.jsx";
+import Header from "./components/Header.jsx";
+import Seats from "./components/Seats.jsx";
+import Sessions from "./components/Sessions.jsx";
+import Success from "./components/Success.jsx";
 
 export default function App() {
     const [movieTitle, setMovieTitle] = useState(null);
@@ -16,10 +16,14 @@ export default function App() {
 
     function cleanState(state) {
         switch (state) {
-            case "movie": setMovieTitle(null);
-            case "session": setSessionInfo(null);
-            case "seats": setSelectedSeats([]);
-            case "personalInfo": setPersonalInfo(null);
+            case "movie":
+                setMovieTitle(null);
+            case "session":
+                setSessionInfo(null);
+            case "seats":
+                setSelectedSeats([]);
+            case "personalInfo":
+                setPersonalInfo(null);
         }
     }
 
@@ -47,15 +51,34 @@ export default function App() {
             <Main>
                 <Routes>
                     <Route path="/" element={<Display setMovieTitle={setMovieTitle} cleanState={cleanState} />} />
-                    <Route path="/movies/:movieId/sessions" element={<Sessions setSessionInfo={setSessionInfo} cleanState={cleanState} />} />
-                    <Route path="/movies/:movieId/sessions/:sessionId/seats" element={<Seats toggleSelectedSeat={toggleSelectedSeat} setPersonalInfo={setPersonalInfo} cleanState={cleanState} />} />
+                    <Route
+                        path="/movies/:movieId/sessions"
+                        element={<Sessions setSessionInfo={setSessionInfo} cleanState={cleanState} />}
+                    />
+                    <Route
+                        path="/movies/:movieId/sessions/:sessionId/seats"
+                        element={
+                            <Seats
+                                toggleSelectedSeat={toggleSelectedSeat}
+                                setPersonalInfo={setPersonalInfo}
+                                cleanState={cleanState}
+                            />
+                        }
+                    />
                     {/* Temporarily deactivated while I haven't implemented authentication */}
                     {/*<Route path="/success" element={<Success data={{ movieTitle, sessionInfo, selectedSeats, personalInfo }} />} />*/}
-                    <Route path="/success" element={<h1 style={{ color: "white", fontSize: "2rem", marginTop: "2rem" }}>Sua reserva foi realizada com sucesso!</h1>} />
+                    <Route
+                        path="/success"
+                        element={
+                            <h1 style={{ color: "white", fontSize: "2rem", marginTop: "2rem" }}>
+                                Sua reserva foi realizada com sucesso!
+                            </h1>
+                        }
+                    />
                 </Routes>
             </Main>
         </BrowserRouter>
-    )
+    );
 }
 
 const Top = styled.div`
@@ -64,7 +87,7 @@ const Top = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-`
+`;
 
 const Main = styled.div`
     width: 100%;
@@ -73,4 +96,4 @@ const Main = styled.div`
     flex-direction: column;
     align-items: center;
     flex: 1;
-`
+`;

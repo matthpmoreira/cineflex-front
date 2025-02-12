@@ -6,7 +6,7 @@ export default function Poster({ movieId, src, onPickMovie }) {
         <Wrapper to={"/movies/" + movieId + "/sessions"} onClick={onPickMovie}>
             <Image src={src} />
         </Wrapper>
-    )
+    );
 }
 
 const Wrapper = styled(Link)`
@@ -14,10 +14,10 @@ const Wrapper = styled(Link)`
     justify-content: center;
     align-items: center;
     line-height: 0;
-`
+`;
 
 const Image = styled.img`
     width: 145px;
     height: 210px;
     border-radius: 8px;
-`
+`;

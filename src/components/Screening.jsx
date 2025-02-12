@@ -1,4 +1,4 @@
-import {Link, useParams} from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 export default function Screening({ session, setSessionInfo }) {
@@ -6,7 +6,10 @@ export default function Screening({ session, setSessionInfo }) {
 
     return (
         <Wrapper>
-            <DateString to={`/movies/${movieId}/sessions/${session._id}/seats`} onClick={() => setSessionInfo(session._id)}>
+            <DateString
+                to={`/movies/${movieId}/sessions/${session._id}/seats`}
+                onClick={() => setSessionInfo(session._id)}
+            >
                 {new Date(session.date).toLocaleString()}
             </DateString>
             {/*{day.weekday}, {day.date}*/}
@@ -19,13 +22,13 @@ export default function Screening({ session, setSessionInfo }) {
             {/*    >{st.name}</Time>))}*/}
             {/*</Times>*/}
         </Wrapper>
-    )
+    );
 }
 
 const DateString = styled(Link)`
     color: inherit;
     text-decoration: none;
-`
+`;
 
 const Wrapper = styled.div`
     padding: 1em;
@@ -39,19 +42,19 @@ const Wrapper = styled.div`
     &:not(:last-child) {
         margin-bottom: 1em;
     }
-`
+`;
 
 const Separator = styled.div`
     height: 1px;
     background: #4e5a65;
     margin: 1em 0;
-`
+`;
 
 const Times = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 1em;
-`
+`;
 
 const Time = styled(Link)`
     padding: 0.5em 1em;
@@ -66,4 +69,4 @@ const Time = styled(Link)`
     color: #ee897f;
     font-size: 16px;
     text-decoration: none;
-`
+`;

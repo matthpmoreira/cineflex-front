@@ -11,7 +11,7 @@ export default function Header() {
                 Cineflex
             </Title>
         </Wrapper>
-    )
+    );
 }
 
 const Wrapper = styled.header`
@@ -21,7 +21,7 @@ const Wrapper = styled.header`
     display: flex;
     justify-content: center;
     align-items: center;
-`
+`;
 
 const Title = styled(Link)`
     color: #fadbc5;
@@ -34,8 +34,8 @@ const Title = styled(Link)`
         vertical-align: bottom;
         margin-right: 10px;
     }
-`
+`;
 
 const Icon = styled.img`
     width: 40px;
-`
+`;

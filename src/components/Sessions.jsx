@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
 
 import Screening from "./Screening.jsx";
 
@@ -10,19 +10,22 @@ export default function Sessions({ setSessionInfo, cleanState }) {
     const [sessions, setSessions] = useState(null);
 
     useEffect(() => {
-        axios.get("https://cineflex-back.onrender.com/movies/" + movieId + "/sessions")
+        axios
+            .get("https://cineflex-back.onrender.com/movies/" + movieId + "/sessions")
             .then(res => setSessions(res.data))
-            .catch(err => console.log(err))
-    }, [])
+            .catch(err => console.log(err));
+    }, []);
 
     useEffect(() => cleanState("session"), []);
 
     return (
         <Wrapper>
             <Title>Selecione a sessão</Title>
-            {sessions?.map((session, i) => <Screening key={i} session={session} setSessionInfo={setSessionInfo} />)}
+            {sessions?.map((session, i) => (
+                <Screening key={i} session={session} setSessionInfo={setSessionInfo} />
+            ))}
         </Wrapper>
-    )
+    );
 }
 
 const Wrapper = styled.section`
@@ -37,4 +40,4 @@ const Title = styled.h2`
     font-family: "Sarala", sans-serif;
     font-size: 24px;
     text-align: center;
-`
+`;

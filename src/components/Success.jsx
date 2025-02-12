@@ -1,14 +1,14 @@
+import axios from "axios";
 import { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
 
 export default function Sessions({ data }) {
     const { movieTitle, sessionInfo, selectedSeats, personalInfo } = data;
 
     axios.post("https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many", {
         ids: selectedSeats.map(seat => seat.id),
-        ...personalInfo
+        ...personalInfo,
     });
 
     return (
@@ -25,7 +25,12 @@ export default function Sessions({ data }) {
                 <section>
                     <H3>Ingressos</H3>
                     <Separator />
-                    {selectedSeats.map((seat, i) => (<Fragment key={i}>{"Assento " + seat.name}<br/></Fragment>))}
+                    {selectedSeats.map((seat, i) => (
+                        <Fragment key={i}>
+                            {"Assento " + seat.name}
+                            <br />
+                        </Fragment>
+                    ))}
                 </section>
                 <section>
                     <H3>Comprador(a)</H3>
@@ -37,7 +42,7 @@ export default function Sessions({ data }) {
             </DataWrapper>
             <Button to="/">Voltar para a tela inicial</Button>
         </Wrapper>
-    )
+    );
 }
 
 const Wrapper = styled.section`
@@ -52,7 +57,7 @@ const Title = styled.h2`
     font-family: "Sarala", sans-serif;
     font-size: 24px;
     text-align: center;
-`
+`;
 
 const DataWrapper = styled.div`
     padding: 1em;
@@ -67,19 +72,19 @@ const DataWrapper = styled.div`
     font-family: "Sarala", sans-serif;
     font-size: 20px;
     line-height: 2em;
-`
+`;
 
 const Separator = styled.div`
     height: 1px;
     background: #4e5a65;
     margin: 5px 0;
-`
+`;
 
 const H3 = styled["h3"]`
     color: #ee897f;
     font-weight: bold;
     font-size: 22px;
-`
+`;
 
 const Button = styled(Link)`
     background: #ee897f;
@@ -98,4 +103,4 @@ const Button = styled(Link)`
     font-weight: bold;
     text-decoration: none;
     text-align: center;
-`
+`;

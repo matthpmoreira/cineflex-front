@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
 
 import Poster from "./Poster.jsx";
 
@@ -8,9 +8,10 @@ export default function Display({ setMovieTitle, cleanState }) {
     const [movies, setMovies] = useState(null);
 
     useEffect(() => {
-        axios.get("https://cineflex-back.onrender.com")
+        axios
+            .get("https://cineflex-back.onrender.com")
             .then(res => setMovies(res.data))
-            .catch(err => console.log(err))
+            .catch(err => console.log(err));
     }, []);
 
     useEffect(() => cleanState("movie"), []);
@@ -18,9 +19,13 @@ export default function Display({ setMovieTitle, cleanState }) {
     return (
         <Wrapper>
             <Title>Em Cartaz</Title>
-            <Grid>{movies?.map((m, i) => <Poster key={i} movieId={m._id} src={m.poster} onPickMovie={() => setMovieTitle(m.title)} />)}</Grid>
+            <Grid>
+                {movies?.map((m, i) => (
+                    <Poster key={i} movieId={m._id} src={m.poster} onPickMovie={() => setMovieTitle(m.title)} />
+                ))}
+            </Grid>
         </Wrapper>
-    )
+    );
 }
 
 const Wrapper = styled.section`
@@ -35,10 +40,10 @@ const Title = styled.h2`
     font-family: "Sarala", sans-serif;
     font-size: 24px;
     text-align: center;
-`
+`;
 
 const Grid = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1em;
-`
+`;

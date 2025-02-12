@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
 
-import SeatGrid from "./SeatGrid.jsx"
 import Form from "./Form.jsx";
+import SeatGrid from "./SeatGrid.jsx";
 
 export default function Seats({ toggleSelectedSeat, setPersonalInfo, cleanState }) {
-    useEffect(() => cleanState("seats"), [])
+    useEffect(() => cleanState("seats"), []);
 
     return (
         <Wrapper>
@@ -16,7 +16,7 @@ export default function Seats({ toggleSelectedSeat, setPersonalInfo, cleanState 
             <Separator />
             <Form setPersonalInfo={setPersonalInfo} />
         </Wrapper>
-    )
+    );
 }
 
 const Wrapper = styled.section`
@@ -34,10 +34,10 @@ const Title = styled.h2`
     font-family: "Sarala", sans-serif;
     font-size: 24px;
     text-align: center;
-`
+`;
 
 const Separator = styled.div`
     height: 1px;
     background: #4e5a65;
     margin: 1em 0;
-`
+`;
