@@ -29,6 +29,7 @@ const Title = styled(Link)`
     font-weight: 600;
     font-family: "Raleway", sans-serif;
     text-decoration: none;
+    display: flex;
 
     > img {
         vertical-align: bottom;
