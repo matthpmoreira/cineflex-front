@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import "./reset.css";
-import "./utils/onpushstate.js"
+import "./utils/onpushstate.js";
 
 createRoot(document.getElementById("root")).render(
     <StrictMode>
