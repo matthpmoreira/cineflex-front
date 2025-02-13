@@ -6,6 +6,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
+        "format": "prettier --write !**/reset.css . | grep -v 'unchanged'",
         "lint": "eslint .",
         "preview": "vite preview"
     },
