@@ -4,6 +4,15 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export default function Sessions({ data }) {
+    return (
+        <>
+            <h1 style={{ color: "white", fontSize: "2rem", margin: "2rem 0" }}>
+                Sua reserva foi realizada com sucesso!
+            </h1>
+            <p style={{ color: "white" }}>A página de conclusão ainda está em desenvolvimento.</p>
+        </>
+    );
+
     const { movieTitle, sessionInfo, selectedSeats, personalInfo } = data;
 
     axios.post("https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many", {

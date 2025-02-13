@@ -66,18 +66,9 @@ export default function App() {
                             />
                         }
                     />
-                    {/* Temporarily deactivated while I haven't implemented authentication */}
-                    {/*<Route path="/success" element={<Success data={{ movieTitle, sessionInfo, selectedSeats, personalInfo }} />} />*/}
                     <Route
                         path="/success"
-                        element={
-                            <>
-                                <h1 style={{ color: "white", fontSize: "2rem", margin: "2rem 0" }}>
-                                    Sua reserva foi realizada com sucesso!
-                                </h1>
-                                <p style={{ color: "white" }}>A página de conclusão ainda está em desenvolvimento.</p>
-                            </>
-                        }
+                        element={<Success data={{ movieTitle, sessionInfo, selectedSeats, personalInfo }} />}
                     />
                     <Route path="/new" element={<StackedSelection />} />
                 </Routes>
