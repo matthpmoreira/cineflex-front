@@ -71,9 +71,12 @@ export default function App() {
                     <Route
                         path="/success"
                         element={
-                            <h1 style={{ color: "white", fontSize: "2rem", marginTop: "2rem" }}>
-                                Sua reserva foi realizada com sucesso!
-                            </h1>
+                            <>
+                                <h1 style={{ color: "white", fontSize: "2rem", margin: "2rem 0" }}>
+                                    Sua reserva foi realizada com sucesso!
+                                </h1>
+                                <p style={{ color: "white" }}>A página de conclusão ainda está em desenvolvimento.</p>
+                            </>
                         }
                     />
                     <Route path="/new" element={<StackedSelection />} />
