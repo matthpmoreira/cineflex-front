@@ -3,7 +3,7 @@ import styled from "styled-components";
 export default function SelectionRow({ title, isOpen, setOpen, children }) {
     return (
         <Container>
-            <Head onClick={() => setOpen(!isOpen)}>
+            <Head onClick={setOpen}>
                 <Title>{title}</Title>
             </Head>
             <BodyWrapper $isOpen={isOpen}>
@@ -28,7 +28,7 @@ const Head = styled.div`
 const Title = styled.h2``;
 
 const BodyWrapper = styled.div`
-    ${({ $isOpen }) => ($isOpen ? "height: 0;" : "")}
+    ${({ $isOpen }) => ($isOpen ? "" : "height: 0;")}
     overflow: hidden;
 `;
 
