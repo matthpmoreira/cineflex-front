@@ -1,16 +1,13 @@
-import { useState } from "react";
 import styled from "styled-components";
 
 import Movies from "./Movies.jsx";
+import NewSessions from "./NewSessions.jsx";
 
 export default function StackedSelection() {
-    const [isOpen, setOpen] = useState({
-        movies: false,
-    });
-
     return (
         <Container>
-            <Movies isOpen={isOpen.movies} setOpen={movies => setOpen({ ...isOpen, movies })} />
+            <Movies />
+            <NewSessions />
         </Container>
     );
 }
