@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import { fetchMovies } from "../utils/backend.js";
@@ -15,6 +16,9 @@ export default function Display({ setMovieTitle, cleanState }) {
 
     return (
         <Wrapper>
+            <Link style={{ display: "block", color: "white", marginBottom: "2rem" }} to={"/new"}>
+                Experimente também a nova interface ainda em desenvolvimento
+            </Link>
             <Title>Em Cartaz</Title>
             <Grid>
                 {movies?.map((m, i) => (
