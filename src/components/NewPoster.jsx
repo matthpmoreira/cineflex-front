@@ -34,9 +34,12 @@ const Container = styled.div`
     width: 200px;
     aspect-ratio: 3 / 4;
     position: relative;
+    flex-shrink: 0;
 
     &:hover {
-        filter: brightness(0.8);
+        ${Image} {
+            filter: brightness(0.6);
+        }
 
         ${Title} {
             filter: opacity(1);
