@@ -4,17 +4,40 @@ import { fetchMovies } from "../utils/backend.js";
 import SelectionRow from "./SelectionRow.jsx";
 import styled from "styled-components";
 
-export default function Movies(props) {
+export default function Movies() {
     const [movies, setMovies] = useState(null);
+    const [isOpen, setOpen] = useState(false);
+
+    useEffect(() => {
+        function updateOpen() {
+            const url = new URL(window.location);
+            setOpen(url.searchParams.get("movie") == null)
+        }
+
+        updateOpen();
+        window.addEventListener("onpushstate", () => updateOpen())
+    }, []);
 
     useEffect(() => {
         fetchMovies().then(res => setMovies(res.data));
     }, []);
 
+    function setQueryParam(movie) {
+        const url = new URL(window.location);
+
+        if (movie == null) {
+            url.searchParams.delete("movie");
+        } else {
+            url.searchParams.set("movie", movie);
+        }
+
+        window.history.pushState(null, "", url);
+    }
+
     return (
-        <SelectionRow title="Selecione um filme" {...props}>
+        <SelectionRow title="Selecione um filme" isOpen={isOpen} setOpen={() => setQueryParam(null)}>
             {movies?.map((movie) => (
-                <Poster key={movie._id}>
+                <Poster key={movie._id} onClick={() => setQueryParam(movie._id)}>
                     <Image $poster={movie.poster} />
                     <Title>{movie.title}</Title>
                 </Poster>
