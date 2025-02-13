@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import styled from "styled-components";
 
 import { fetchMovies } from "../utils/backend.js";
 import SelectionRow from "./SelectionRow.jsx";
-import styled from "styled-components";
 
 export default function Movies() {
     const [movies, setMovies] = useState(null);
@@ -11,11 +11,11 @@ export default function Movies() {
     useEffect(() => {
         function updateOpen() {
             const url = new URL(window.location);
-            setOpen(url.searchParams.get("movie") == null)
+            setOpen(url.searchParams.get("movie") == null);
         }
 
         updateOpen();
-        window.addEventListener("onpushstate", () => updateOpen())
+        window.addEventListener("onpushstate", () => updateOpen());
     }, []);
 
     useEffect(() => {
@@ -24,6 +24,8 @@ export default function Movies() {
 
     function setQueryParam(movie) {
         const url = new URL(window.location);
+        url.searchParams.delete("session");
+        url.searchParams.delete("seats");
 
         if (movie == null) {
             url.searchParams.delete("movie");
@@ -36,7 +38,7 @@ export default function Movies() {
 
     return (
         <SelectionRow title="Selecione um filme" isOpen={isOpen} setOpen={() => setQueryParam(null)}>
-            {movies?.map((movie) => (
+            {movies?.map(movie => (
                 <Poster key={movie._id} onClick={() => setQueryParam(movie._id)}>
                     <Image $poster={movie.poster} />
                     <Title>{movie.title}</Title>
@@ -62,7 +64,7 @@ const Image = styled.div`
     width: 100%;
     height: 100%;
     border-radius: 10px;
-    background-image: url(${({$poster}) => $poster});
+    background-image: url(${({ $poster }) => $poster});
     background-position: center;
     background-size: cover;
 `;
