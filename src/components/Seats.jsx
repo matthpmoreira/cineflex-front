@@ -1,43 +1,82 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useSearchParams } from "wouter";
 
-import Form from "./Form.jsx";
-import SeatGrid from "./SeatGrid.jsx";
+import { fetchSeats } from "../utils/backend.js";
 
-export default function Seats({ toggleSelectedSeat, setPersonalInfo, cleanState }) {
-    useEffect(() => cleanState("seats"), []);
+export default function Seats() {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const seatNumbers = (searchParams.get("seats") || null)?.split(" ").map(Number) ?? [];
+    const sessionId = searchParams.get("session");
+    const movieId = searchParams.get("movie");
+
+    const [seats, setSeats] = useState(null);
+    const [selected, setSelected] = useState(new Set(seatNumbers));
+    setSearchParams({ movie: movieId, session: sessionId, seats: [...selected].join(" ") });
+
+    useEffect(() => {
+        fetchSeats(movieId, sessionId).then(res => setSeats(res.data));
+    }, [movieId, sessionId]);
+
+    function toggleSeat(id, number, taken) {
+        if (taken) {
+            return () => alert("Esse assento não está disponível");
+        }
+
+        return () => {
+            !selected.delete(number) && selected.add(number);
+            setSelected(selected);
+        };
+    }
 
     return (
-        <Wrapper>
-            <Title>Selecione o(s) assento(s)</Title>
-            <SeatGrid toggleSelectedSeat={toggleSelectedSeat} />
-            <Separator />
-            <Form setPersonalInfo={setPersonalInfo} />
-        </Wrapper>
+        <Container>
+            <Grid>
+                {seats?.map(({ _id, number, taken }) => (
+                    <Seat
+                        key={_id}
+                        $taken={taken}
+                        $selected={selected.has(number)}
+                        onClick={toggleSeat(_id, number, taken)}
+                    >
+                        {number}
+                    </Seat>
+                ))}
+            </Grid>
+            <Button onClick={() => setSearchParams(prev => (prev.set("checkout", "true"), prev))}>Confirmar</Button>
+        </Container>
     );
 }
 
-const Wrapper = styled.section`
-    padding: 24px;
-    background: #212226;
+const Container = styled.div``;
+
+const Grid = styled.div`
+    display: grid;
+    grid-template: repeat(5, 1fr) / repeat(10, 1fr);
+    gap: 10px;
+`;
+
+const Seat = styled.div`
+    width: 2em;
+    aspect-ratio: 1 / 1;
+    background-color: ${({ $taken, $selected }) => {
+        if (!$taken && !$selected) return "#9db899";
+        else if (!$taken && $selected) return "#fadbc5";
+        else return "#2b2d36";
+    }};
+
+    border: ${({ $selected }) => ($selected ? "2px solid #ee897f" : "none")};
+    border-radius: 9999px;
 
     display: flex;
-    flex-direction: column;
-    gap: 24px;
-    flex: 1;
+    justify-content: center;
+    align-items: center;
+
+    color: #2b2d36;
+    font-size: 11px;
+    font-family: sans-serif;
+    text-decoration: none;
+    user-select: none;
 `;
 
-const Title = styled.h2`
-    color: white;
-    font-family: "Sarala", sans-serif;
-    font-size: 24px;
-    text-align: center;
-`;
-
-const Separator = styled.div`
-    height: 1px;
-    background: #4e5a65;
-    margin: 1em 0;
-`;
+const Button = styled.button``;

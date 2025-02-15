@@ -1,9 +1,8 @@
 import axios from "axios";
-import { Fragment, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Fragment } from "react";
 import styled from "styled-components";
 
-export default function Sessions({ data }) {
+export default function Checkout() {
     return (
         <>
             <h1 style={{ color: "white", fontSize: "2rem", margin: "2rem 0" }}>
@@ -95,7 +94,7 @@ const H3 = styled["h3"]`
     font-size: 22px;
 `;
 
-const Button = styled(Link)`
+const Button = styled.div`
     background: #ee897f;
     padding: 0.5em;
     margin-top: 20px;

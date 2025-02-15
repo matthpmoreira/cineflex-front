@@ -1,40 +1,32 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useSearchParams } from "wouter";
 
 import { fetchSessions } from "../utils/backend.js";
-import Screening from "./Screening.jsx";
 
-export default function Sessions({ setSessionInfo, cleanState }) {
-    const { movieId } = useParams();
+export default function Sessions() {
+    const [searchParams, setSearchParams] = useSearchParams();
     const [sessions, setSessions] = useState(null);
+    const movieId = searchParams.get("movie");
 
     useEffect(() => {
         fetchSessions(movieId).then(res => setSessions(res.data));
     }, [movieId]);
 
-    useEffect(() => cleanState("session"), []);
+    function setQueryParam(id) {
+        setSearchParams({ movie: movieId, session: id });
+    }
 
     return (
-        <Wrapper>
-            <Title>Selecione a sessão</Title>
-            {sessions?.map((session, i) => (
-                <Screening key={i} session={session} setSessionInfo={setSessionInfo} />
+        <SelectionRow>
+            {sessions?.map(session => (
+                <Session key={session._id} onClick={() => setQueryParam(session._id)}>
+                    ${session.date}
+                </Session>
             ))}
-        </Wrapper>
+        </SelectionRow>
     );
 }
 
-const Wrapper = styled.section`
-    padding: 24px;
-    background: #212226;
-    flex: 1;
-`;
-
-const Title = styled.h2`
-    margin-bottom: 1em;
-    color: white;
-    font-family: "Sarala", sans-serif;
-    font-size: 24px;
-    text-align: center;
-`;
+const SelectionRow = styled.div``;
+const Session = styled.div``;

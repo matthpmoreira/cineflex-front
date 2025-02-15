@@ -1,52 +1,40 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useSearchParams } from "wouter";
 
 import { fetchMovies } from "../utils/backend.js";
-import SelectionRow from "./SelectionRow.jsx";
 
 export default function Movies() {
+    const [_, setSearchParams] = useSearchParams();
     const [movies, setMovies] = useState(null);
-    const [isOpen, setOpen] = useState(false);
-
-    useEffect(() => {
-        function updateOpen() {
-            const url = new URL(window.location);
-            setOpen(url.searchParams.get("movie") == null);
-        }
-
-        updateOpen();
-        window.addEventListener("onpushstate", () => updateOpen());
-    }, []);
 
     useEffect(() => {
         fetchMovies().then(res => setMovies(res.data));
     }, []);
 
-    function setQueryParam(movie) {
-        const url = new URL(window.location);
-        url.searchParams.delete("session");
-        url.searchParams.delete("seats");
-
-        if (movie == null) {
-            url.searchParams.delete("movie");
-        } else {
-            url.searchParams.set("movie", movie);
-        }
-
-        window.history.pushState(null, "", url);
+    function setQueryParam(id) {
+        setSearchParams({ movie: id });
     }
 
     return (
-        <SelectionRow title="Selecione um filme" isOpen={isOpen} setOpen={() => setQueryParam(null)}>
+        <Container>
             {movies?.map(movie => (
                 <Poster key={movie._id} onClick={() => setQueryParam(movie._id)}>
                     <Image $poster={movie.poster} />
                     <Title>{movie.title}</Title>
                 </Poster>
             ))}
-        </SelectionRow>
+        </Container>
     );
 }
+
+const Container = styled.div`
+    overflow-x: scroll;
+
+    display: flex;
+    justify-content: safe center;
+    gap: 1rem;
+`;
 
 const Title = styled.div`
     color: white;

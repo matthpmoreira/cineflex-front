@@ -6,16 +6,15 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "format": "prettier --write !**/reset.css . | grep -v 'unchanged'",
-        "lint": "eslint .",
+        "lint": "prettier --write !**/reset.css . | grep -v 'unchanged'; eslint .",
         "preview": "vite preview"
     },
     "dependencies": {
         "axios": "^1.7.9",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
-        "react-router-dom": "^6.29.0",
-        "styled-components": "^6.1.15"
+        "styled-components": "^6.1.15",
+        "wouter": "^3.6.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.19.0",

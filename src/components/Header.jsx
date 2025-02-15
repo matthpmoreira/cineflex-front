@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import clapperboard from "../assets/clapperboard.png";
@@ -23,7 +22,7 @@ const Wrapper = styled.header`
     align-items: center;
 `;
 
-const Title = styled(Link)`
+const Title = styled.div`
     color: #fadbc5;
     font-size: 34px;
     font-weight: 600;

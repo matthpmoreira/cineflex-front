@@ -1,79 +1,35 @@
-import { useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
+import { useSearchParams } from "wouter";
 
-import Display from "./components/Display.jsx";
+import Checkout from "./components/Checkout.jsx";
 import Header from "./components/Header.jsx";
+import Movies from "./components/Movies.jsx";
 import Seats from "./components/Seats.jsx";
 import Sessions from "./components/Sessions.jsx";
-import StackedSelection from "./components/StackedSelection.jsx";
-import Success from "./components/Success.jsx";
 
 export default function App() {
-    const [movieTitle, setMovieTitle] = useState(null);
-    const [sessionInfo, setSessionInfo] = useState(null);
-    const [selectedSeats, setSelectedSeats] = useState([]);
-    const [personalInfo, setPersonalInfo] = useState(null);
+    const [searchParams] = useSearchParams();
 
-    function cleanState(state) {
-        switch (state) {
-            case "movie":
-                setMovieTitle(null);
-            case "session":
-                setSessionInfo(null);
-            case "seats":
-                setSelectedSeats([]);
-            case "personalInfo":
-                setPersonalInfo(null);
-        }
-    }
-
-    function toggleSelectedSeat(target) {
-        const index = selectedSeats.indexOf(selectedSeats.find(query => query.id === target.id));
-
-        if (index > -1) {
-            setSelectedSeats(selectedSeats.toSpliced(index, 1));
+    const component = (() => {
+        if (searchParams.get("movie") == null) {
+            return <Movies />;
+        } else if (searchParams.get("session") == null) {
+            return <Sessions />;
+        } else if (searchParams.get("checkout") == null) {
+            return <Seats />;
         } else {
-            setSelectedSeats([...selectedSeats, target]);
+            return <Checkout />;
         }
-    }
-
-    console.log(movieTitle);
-    console.log(sessionInfo);
-    console.log(selectedSeats);
-    console.log(personalInfo);
+    })();
 
     return (
-        <BrowserRouter>
+        <>
             <Top>
                 <Header />
             </Top>
 
-            <Main>
-                <Routes>
-                    <Route path="/" element={<Display setMovieTitle={setMovieTitle} cleanState={cleanState} />} />
-                    <Route
-                        path="/movies/:movieId/sessions"
-                        element={<Sessions setSessionInfo={setSessionInfo} cleanState={cleanState} />}
-                    />
-                    <Route
-                        path="/movies/:movieId/sessions/:sessionId/seats"
-                        element={
-                            <Seats
-                                toggleSelectedSeat={toggleSelectedSeat}
-                                setPersonalInfo={setPersonalInfo}
-                                cleanState={cleanState}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/success"
-                        element={<Success data={{ movieTitle, sessionInfo, selectedSeats, personalInfo }} />}
-                    />
-                    <Route path="/new" element={<StackedSelection />} />
-                </Routes>
-            </Main>
-        </BrowserRouter>
+            <Main>{component}</Main>
+        </>
     );
 }
 
