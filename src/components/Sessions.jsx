@@ -21,13 +21,24 @@ export default function Sessions() {
 
     return (
         <>
-            {sessions?.map(session => (
-                <div key={session.id} onClick={() => setQueryParam(session.id)}>
-                    {session.date.toString()}
-                </div>
-            ))}
+            {sessions?.map(session => {
+                const date = new Date(session.date);
+
+                return (
+                <Session key={session.id} onClick={() => setQueryParam(session.id)}>
+                    {`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} às ${date.getHours()}:${date.getMinutes()}`}
+                </Session>
+            )})}
         </>
     );
 }
 
-const Session = styled.div``;
+const Session = styled.div`
+    margin: 10px;
+    padding: 1rem;
+    background: lightgray;
+    border-radius: 9999px;
+    user-select: none;
+    
+    font-family: sans-serif;
+`;
