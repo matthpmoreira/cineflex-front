@@ -2,53 +2,64 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSearchParams } from "wouter";
 
-import { fetchSeats } from "../utils/backend.js";
+import { getSessionById } from "../utils/api.js";
 
 export default function Seats() {
+    const [seats, setSeats] = useState(null);
+    const [selected, setSelected] = useState(new Set());
+
     const [searchParams, setSearchParams] = useSearchParams();
-    const seatNumbers = (searchParams.get("seats") || null)?.split(" ").map(Number) ?? [];
     const sessionId = searchParams.get("session");
     const movieId = searchParams.get("movie");
 
-    const [seats, setSeats] = useState(null);
-    const [selected, setSelected] = useState(new Set(seatNumbers));
-    setSearchParams({ movie: movieId, session: sessionId, seats: [...selected].join(" ") });
-
     useEffect(() => {
-        fetchSeats(movieId, sessionId).then(res => setSeats(res.data));
+        getSessionById(sessionId).then(session => setSeats(session.seats));
     }, [movieId, sessionId]);
 
-    function toggleSeat(id, number, taken) {
-        if (taken) {
+    function toggleSeat(number, available) {
+        if (!available) {
             return () => alert("Esse assento não está disponível");
         }
 
         return () => {
-            !selected.delete(number) && selected.add(number);
-            setSelected(selected);
+            if (selected.has(number)) {
+                selected.delete(number);
+            } else {
+                selected.add(number);
+            }
+
+            setSelected(new Set(selected));
         };
     }
 
+    function checkout() {
+        if (selected.size === 0) {
+            alert("Selecione pelo menos um assento");
+            return;
+        }
+
+        const seatIds = seats.filter(seat => selected.has(seat.number)).map(seat => seat.number);
+        setSearchParams(prev => (prev.set("seats", seatIds.join(" ")), prev));
+    }
+
     return (
-        <Container>
+        <>
             <Grid>
-                {seats?.map(({ _id, number, taken }) => (
+                {seats?.map(({ number, available }) => (
                     <Seat
-                        key={_id}
-                        $taken={taken}
+                        key={number}
+                        $available={available}
                         $selected={selected.has(number)}
-                        onClick={toggleSeat(_id, number, taken)}
+                        onClick={toggleSeat(number, available)}
                     >
                         {number}
                     </Seat>
                 ))}
             </Grid>
-            <Button onClick={() => setSearchParams(prev => (prev.set("checkout", "true"), prev))}>Confirmar</Button>
-        </Container>
+            <Button onClick={checkout}>Confirmar</Button>
+        </>
     );
 }
-
-const Container = styled.div``;
 
 const Grid = styled.div`
     display: grid;
@@ -59,9 +70,9 @@ const Grid = styled.div`
 const Seat = styled.div`
     width: 2em;
     aspect-ratio: 1 / 1;
-    background-color: ${({ $taken, $selected }) => {
-        if (!$taken && !$selected) return "#9db899";
-        else if (!$taken && $selected) return "#fadbc5";
+    background-color: ${({ $available, $selected }) => {
+        if ($available && !$selected) return "#9db899";
+        else if ($available && $selected) return "#fadbc5";
         else return "#2b2d36";
     }};
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSearchParams } from "wouter";
 
-import { fetchSessions } from "../utils/backend.js";
+import { getMovieById, getSessionById } from "../utils/api.js";
 
 export default function Sessions() {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -10,7 +10,9 @@ export default function Sessions() {
     const movieId = searchParams.get("movie");
 
     useEffect(() => {
-        fetchSessions(movieId).then(res => setSessions(res.data));
+        getMovieById(movieId)
+            .then(movie => Promise.all(movie.sessions.map(id => getSessionById(id))))
+            .then(sessions => setSessions(sessions));
     }, [movieId]);
 
     function setQueryParam(id) {
@@ -18,15 +20,14 @@ export default function Sessions() {
     }
 
     return (
-        <SelectionRow>
+        <>
             {sessions?.map(session => (
-                <Session key={session._id} onClick={() => setQueryParam(session._id)}>
-                    ${session.date}
-                </Session>
+                <div key={session.id} onClick={() => setQueryParam(session.id)}>
+                    {session.date.toString()}
+                </div>
             ))}
-        </SelectionRow>
+        </>
     );
 }
 
-const SelectionRow = styled.div``;
 const Session = styled.div``;

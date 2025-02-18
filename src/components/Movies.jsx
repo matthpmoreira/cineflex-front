@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSearchParams } from "wouter";
 
-import { fetchMovies } from "../utils/backend.js";
+import { getAllMovies } from "../utils/api.js";
 
 export default function Movies() {
     const [_, setSearchParams] = useSearchParams();
     const [movies, setMovies] = useState(null);
 
     useEffect(() => {
-        fetchMovies().then(res => setMovies(res.data));
+        getAllMovies().then(movies => setMovies(movies));
     }, []);
 
     function setQueryParam(id) {
@@ -19,7 +19,7 @@ export default function Movies() {
     return (
         <Container>
             {movies?.map(movie => (
-                <Poster key={movie._id} onClick={() => setQueryParam(movie._id)}>
+                <Poster key={movie.id} onClick={() => setQueryParam(movie.id)}>
                     <Image $poster={movie.poster} />
                     <Title>{movie.title}</Title>
                 </Poster>
