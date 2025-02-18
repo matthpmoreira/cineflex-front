@@ -29,6 +29,7 @@ export default function Movies() {
 }
 
 const Container = styled.div`
+    width: min(1000px, 100%);
     overflow-x: scroll;
 
     display: flex;
