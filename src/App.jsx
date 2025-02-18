@@ -8,12 +8,17 @@ import Seats from "./components/Seats.jsx";
 import Sessions from "./components/Sessions.jsx";
 
 export default function App() {
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    function goToHomePage(event) {
+        event.preventDefault();
+        setSearchParams({});
+    }
 
     return (
         <>
             <Header>
-                <HomeAnchor href="/">
+                <HomeAnchor href="?" onClick={goToHomePage}>
                     <Clapperboard src={clapperboard} />
                     Cineflex
                 </HomeAnchor>
