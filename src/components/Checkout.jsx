@@ -5,9 +5,10 @@ import { useSearchParams } from "wouter";
 import { getMovieById, getSessionById, postTicket } from "../utils/api.js";
 
 export default function Checkout() {
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [movie, setMovie] = useState(null);
     const [session, setSession] = useState(null);
+    const [isSubmitting, setSubmitting] = useState(false);
     const seats = searchParams.get("seats").split(" ");
     const date = new Date(session == null ? 0 : session.date);
 
@@ -18,64 +19,76 @@ export default function Checkout() {
 
     async function submit(event) {
         event.preventDefault();
-        postTicket({ session: session.id, seats });
+        setSubmitting(true);
+        await postTicket({ session: session.id, seats });
+        setSubmitting(false);
+        setSearchParams({});
     }
 
-    return movie == null && session == null ?
-            <></>
-        :   <>
-                <Title>Verifique seu pedido</Title>
-                <Data>
-                    <section>
-                        <Something>Filme e sessão</Something>
-                        <Separator />
-                        {movie.title}
-                        <br />
-                        {`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} às ${date.getHours()}:${date.getMinutes()}`}
-                    </section>
-                    <section>
-                        <Something>Assentos</Something>
-                        <Separator />
-                        {seats.map(number => (
-                            <>
-                                {number}
-                                <br />
-                            </>
-                        ))}
-                    </section>
-                </Data>
-                {/*<Button to="/">Voltar para a tela inicial</Button>*/}
+    return (
+        movie != null &&
+        session != null && (
+            <div>
+                <>
+                    <Title>Verifique seu pedido</Title>
+                    <Data>
+                        <section>
+                            <Something>Filme e sessão</Something>
+                            <Separator />
+                            {movie.title}
+                            <br />
+                            {`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} às ${date.getHours()}:${date.getMinutes()}`}
+                        </section>
+                        <section>
+                            <Something>Assentos</Something>
+                            <Separator />
+                            {seats.map(number => (
+                                <>
+                                    {number}
+                                    <br />
+                                </>
+                            ))}
+                        </section>
+                    </Data>
+                    {/*<Button to="/">Voltar para a tela inicial</Button>*/}
 
-                <Form onSubmit={submit}>
-                    <Field>
-                        <Label htmlFor="name">Nome do comprador(a)</Label>
-                        <Input
-                            // onChange={}
-                            id="name"
-                            type="text"
-                            placeholder="Digite seu nome..."
-                            required
-                        />
-                    </Field>
-                    <Field>
-                        <Label htmlFor="cpf">CPF do comprador(a)</Label>
-                        <Input
-                            // onChange={}
-                            id="cpf"
-                            type="text"
-                            placeholder="Digite seu CPF..."
-                            pattern="[0-9]{3}.{0,1}[0-9]{3}.{0,1}[0-9]{3}-{0,1}[0-9]{2}"
-                            required
-                        />
-                    </Field>
-                    <Submit>Reservar assento(s)</Submit>
-                </Form>
-            </>;
+                    {/*<Form onSubmit={submit}>*/}
+                    {/*    <Field>*/}
+                    {/*        <Label htmlFor="name">Nome do comprador(a)</Label>*/}
+                    {/*        <Input*/}
+                    {/*            // onChange={}*/}
+                    {/*            id="name"*/}
+                    {/*            type="text"*/}
+                    {/*            placeholder="Digite seu nome..."*/}
+                    {/*            required*/}
+                    {/*        />*/}
+                    {/*    </Field>*/}
+                    {/*    <Field>*/}
+                    {/*        <Label htmlFor="cpf">CPF do comprador(a)</Label>*/}
+                    {/*        <Input*/}
+                    {/*            // onChange={}*/}
+                    {/*            id="cpf"*/}
+                    {/*            type="text"*/}
+                    {/*            placeholder="Digite seu CPF..."*/}
+                    {/*            pattern="[0-9]{3}.{0,1}[0-9]{3}.{0,1}[0-9]{3}-{0,1}[0-9]{2}"*/}
+                    {/*            required*/}
+                    {/*        />*/}
+                    {/*    </Field>*/}
+                    <Submit onClick={submit} disabled={isSubmitting}>
+                        Reservar assento(s)
+                    </Submit>
+                    <div style={{ color: "white" }}>
+                        *As páginas de checkout e conclusão ainda estão em desenvolvimento
+                    </div>
+                    {/*</Form>*/}
+                </>
+            </div>
+        )
+    );
 }
 
 const Title = styled.div`
     color: white;
-    font-family: "Sarala", sans-serif;
     font-size: 24px;
     text-align: center;
 `;
@@ -90,7 +103,6 @@ const Data = styled.div`
     gap: 1em;
 
     color: white;
-    font-family: "Sarala", sans-serif;
     font-size: 20px;
     line-height: 2em;
 `;
@@ -119,7 +131,6 @@ const Button = styled.div`
     align-items: center;
 
     color: #2b2d36;
-    font-family: "Sarala", sans-serif;
     font-size: 18px;
     font-weight: bold;
     text-decoration: none;
@@ -140,7 +151,6 @@ const Label = styled.label`
     margin-bottom: 0.25em;
 
     color: white;
-    font-family: "Sarala", sans-serif;
 `;
 
 const Input = styled.input`

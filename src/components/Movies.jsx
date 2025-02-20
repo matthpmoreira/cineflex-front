@@ -1,76 +1,88 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useSearchParams } from "wouter";
 
 import { getAllMovies } from "../utils/api.js";
+import { GlowingBorder } from "./GlowingBorder.jsx";
 
 export default function Movies() {
-    const [_, setSearchParams] = useSearchParams();
     const [movies, setMovies] = useState(null);
 
     useEffect(() => {
         getAllMovies().then(movies => setMovies(movies));
     }, []);
 
-    function setQueryParam(id) {
-        setSearchParams({ movie: id });
-    }
-
     return (
-        <Container>
-            {movies?.map(movie => (
-                <Poster key={movie.id} onClick={() => setQueryParam(movie.id)}>
-                    <Image $poster={movie.poster} />
-                    <Title>{movie.title}</Title>
-                </Poster>
-            ))}
-        </Container>
+        <div>
+            <H1>Selecione um filme</H1>
+            <MovieList>
+                {movies?.map(movie => (
+                    <Poster key={movie.id} data={movie} />
+                ))}
+            </MovieList>
+        </div>
     );
 }
 
-const Container = styled.div`
-    width: min(1000px, 100%);
-    overflow-x: scroll;
+function Poster({ data }) {
+    const [_, setSearchParams] = useSearchParams();
+    const [isHovering, setHovering] = useState(false);
 
-    display: flex;
-    justify-content: safe center;
-    gap: 1rem;
+    return (
+        <PosterContainer
+            key={data.id}
+            onClick={() => setSearchParams({ movie: data.id })}
+            onMouseEnter={() => setHovering(true)}
+            onMouseLeave={() => setHovering(false)}
+        >
+            {isHovering ?
+                <GlowingBorder borderWidth={6}>
+                    <ImageContainer>
+                        <Image $src={data.poster} />
+                    </ImageContainer>
+                </GlowingBorder>
+            :   <ImageContainer>
+                    <Image $src={data.poster} />
+                </ImageContainer>
+            }
+            <Title>{data.title}</Title>
+        </PosterContainer>
+    );
+}
+
+const H1 = styled.h1`
+    color: white;
 `;
 
-const Title = styled.div`
-    color: white;
-    filter: opacity(0);
-    text-align: center;
-    user-select: none;
+const MovieList = styled.div`
+    display: flex;
+    justify-content: safe center;
+    overflow-x: scroll;
+`;
 
-    transform: translate(-50%, -50%);
-    position: absolute;
-    left: 50%;
-    top: 50%;
+const PosterContainer = styled.div`
+    width: 200px;
+    margin: 0 -6px;
+    flex-shrink: 0;
+`;
+
+const ImageContainer = styled.div`
+    padding: 12px;
+    aspect-ratio: 3 / 4;
 `;
 
 const Image = styled.div`
     width: 100%;
     height: 100%;
-    border-radius: 10px;
-    background-image: url(${({ $poster }) => $poster});
+    border-radius: 2px;
+    background-image: url(${props => props.$src});
     background-position: center;
     background-size: cover;
 `;
 
-const Poster = styled.div`
-    width: 200px;
-    aspect-ratio: 3 / 4;
-    position: relative;
-    flex-shrink: 0;
-
-    &:hover {
-        ${Image} {
-            filter: brightness(0.6);
-        }
-
-        ${Title} {
-            filter: opacity(1);
-        }
-    }
+const Title = styled.div`
+    color: white;
+    text-align: center;
+    text-wrap: balance;
+    user-select: none;
 `;

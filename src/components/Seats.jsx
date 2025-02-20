@@ -18,7 +18,7 @@ export default function Seats() {
 
     function toggleSeat(number, available) {
         if (!available) {
-            return () => alert("Esse assento não está disponível");
+            return () => alert("Este assento não está disponível");
         }
 
         return () => {
@@ -43,7 +43,8 @@ export default function Seats() {
     }
 
     return (
-        <>
+        <div>
+            <H1>Selecione os assentos</H1>
             <Grid>
                 {seats?.map(({ number, available }) => (
                     <Seat
@@ -57,37 +58,46 @@ export default function Seats() {
                 ))}
             </Grid>
             <Button onClick={checkout}>Confirmar</Button>
-        </>
+        </div>
     );
 }
 
+const H1 = styled.h1`
+    color: white;
+`;
+
 const Grid = styled.div`
+    width: min-content;
+    margin: auto;
+
     display: grid;
     grid-template: repeat(5, 1fr) / repeat(10, 1fr);
     gap: 10px;
 `;
 
 const Seat = styled.div`
-    width: 2em;
+    width: 3ch;
     aspect-ratio: 1 / 1;
     background-color: ${({ $available, $selected }) => {
-        if ($available && !$selected) return "#9db899";
-        else if ($available && $selected) return "#fadbc5";
-        else return "#2b2d36";
+        if ($available && !$selected) return "#00aeef";
+        else if ($available && $selected) return "#ec008c";
+        else return "#111";
     }};
 
-    border: ${({ $selected }) => ($selected ? "2px solid #ee897f" : "none")};
+    border: ${props => (props.$selected ? "2px solid #ec008c" : "none")};
     border-radius: 9999px;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    color: #2b2d36;
+    color: ${props => (props.$selected ? "white" : "#111")};
     font-size: 11px;
-    font-family: sans-serif;
-    text-decoration: none;
+    font-weight: bold;
     user-select: none;
 `;
 
-const Button = styled.button``;
+const Button = styled.button`
+    display: block;
+    margin: 1rem auto 0;
+`;

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useSearchParams } from "wouter";
 
-import clapperboard from "./assets/clapperboard.png";
 import Checkout from "./components/Checkout.jsx";
 import Movies from "./components/Movies.jsx";
 import Seats from "./components/Seats.jsx";
@@ -19,7 +18,6 @@ export default function App() {
         <>
             <Header>
                 <HomeAnchor href="?" onClick={goToHomePage}>
-                    <Clapperboard src={clapperboard} />
                     Cineflex
                 </HomeAnchor>
             </Header>
@@ -43,7 +41,7 @@ function getComponent(searchParams) {
 
 const Header = styled.div`
     width: 100%;
-    background: #ee897f;
+    padding: 1rem;
     user-select: none;
 
     display: flex;
@@ -52,10 +50,11 @@ const Header = styled.div`
 `;
 
 const HomeAnchor = styled.a`
-    color: #fadbc5;
+    color: white;
     text-decoration: none;
     font-size: 2rem;
     font-weight: 600;
+    font-family: "Eighties", sans-serif;
 
     display: flex;
     justify-content: center;
@@ -63,18 +62,10 @@ const HomeAnchor = styled.a`
     gap: 0.5rem;
 `;
 
-const Clapperboard = styled.img`
-    display: block;
-    height: 1em;
-`;
-
 const Main = styled.div`
-    width: 100%;
-    height: 100%;
+    width: min(1000px, 100%);
     padding: 1rem;
-    background: #212226;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin: auto;
+    background: #222;
+    border-radius: 1rem;
 `;

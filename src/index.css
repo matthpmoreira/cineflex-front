@@ -1,3 +1,17 @@
+@font-face {
+    font-family: "Eighties";
+    src:
+        local("Eighties"),
+        url("./fonts/Eighties.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "DM Sans";
+    src:
+        local("DMSans"),
+        url("./fonts/DMSans.ttf") format("truetype");
+}
+
 html,
 body {
     height: 100%;
@@ -5,4 +19,6 @@ body {
 
 #root {
     height: 100%;
+    background: #111;
+    font-family: "DM Sans", sans-serif;
 }
