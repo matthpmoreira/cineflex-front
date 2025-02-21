@@ -55,14 +55,16 @@ const H1 = styled.h1`
 
 const MovieList = styled.div`
     display: flex;
-    justify-content: safe center;
     overflow-x: scroll;
 `;
 
 const PosterContainer = styled.div`
     width: 200px;
-    margin: 0 -6px;
     flex-shrink: 0;
+    
+    & + * {
+        margin-left: -12px;
+    }
 `;
 
 const ImageContainer = styled.div`

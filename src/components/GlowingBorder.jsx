@@ -11,10 +11,10 @@ export function GlowingBorder({ children, borderWidth }) {
         canvas.width = canvas.scrollWidth;
         canvas.height = canvas.scrollHeight;
 
-        const x1 = borderWidth * 2;
-        const y1 = borderWidth * 2;
-        const x2 = canvas.width - borderWidth * 4;
-        const y2 = canvas.height - borderWidth * 4;
+        const x1 = borderWidth;
+        const y1 = borderWidth;
+        const x2 = canvas.width - borderWidth * 2;
+        const y2 = canvas.height - borderWidth * 2;
 
         let angle = 0;
         let animationFrame;
