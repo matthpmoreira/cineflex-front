@@ -4,9 +4,12 @@ import { useSearchParams } from "wouter";
 
 import { getAllMovies } from "../utils/api.js";
 import { GlowingBorder } from "./GlowingBorder.jsx";
+import { Button } from "./Button.jsx";
 
 export default function Movies() {
     const [movies, setMovies] = useState(null);
+    const [selected, setSelected] = useState(null);
+    const [_, setSearchParams] = useSearchParams();
 
     useEffect(() => {
         getAllMovies().then(movies => setMovies(movies));
@@ -17,25 +20,21 @@ export default function Movies() {
             <H1>Selecione um filme</H1>
             <MovieList>
                 {movies?.map(movie => (
-                    <Poster key={movie.id} data={movie} />
+                    <Poster key={movie.id} data={movie} setSelected={setSelected} selected={selected === movie.id} />
                 ))}
             </MovieList>
+            <Button onClick={() => setSearchParams({ movie: selected })}>Confirmar</Button>
         </div>
     );
 }
 
-function Poster({ data }) {
-    const [_, setSearchParams] = useSearchParams();
-    const [isHovering, setHovering] = useState(false);
-
+function Poster({ data, setSelected, selected }) {
     return (
         <PosterContainer
             key={data.id}
-            onClick={() => setSearchParams({ movie: data.id })}
-            onMouseEnter={() => setHovering(true)}
-            onMouseLeave={() => setHovering(false)}
+            onClick={() => setSelected(data.id)}
         >
-            {isHovering ?
+            {selected ?
                 <GlowingBorder borderWidth={6}>
                     <ImageContainer>
                         <Image $src={data.poster} />

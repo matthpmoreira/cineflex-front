@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useSearchParams } from "wouter";
 
 import { getSessionById } from "../utils/api.js";
+import { Button } from "./Button.jsx";
 
 export default function Seats() {
     const [seats, setSeats] = useState(null);
@@ -95,9 +96,4 @@ const Seat = styled.div`
     font-size: 11px;
     font-weight: bold;
     user-select: none;
-`;
-
-const Button = styled.button`
-    display: block;
-    margin: 1rem auto 0;
 `;

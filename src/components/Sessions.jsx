@@ -4,10 +4,12 @@ import { useSearchParams } from "wouter";
 
 import { getMovieById, getSessionById } from "../utils/api.js";
 import { GlowingBorder } from "./GlowingBorder.jsx";
+import { Button } from "./Button.jsx";
 
 export default function Sessions() {
-    const [searchParams] = useSearchParams();
     const [sessions, setSessions] = useState(null);
+    const [selected, setSelected] = useState(null);
+    const [searchParams, setSearchParams] = useSearchParams();
     const movieId = searchParams.get("movie");
 
     useEffect(() => {
@@ -20,17 +22,14 @@ export default function Sessions() {
         <div>
             <H1>Selecione uma sessão</H1>
             {sessions?.map(session => {
-                return <Session key={session.id} data={session} />;
+                return <Session key={session.id} data={session} setSelected={setSelected} selected={selected === session.id} />;
             })}
+            <Button onClick={() => setSearchParams({ movie: movieId, session: selected })}>Confirmar</Button>
         </div>
     );
 }
 
-function Session({ data }) {
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [isHovering, setHovering] = useState(false);
-    const movieId = searchParams.get("movie");
-
+function Session({ data, setSelected, selected }) {
     const information = useMemo(() => {
         const date = new Date(data.date);
 
@@ -43,11 +42,9 @@ function Session({ data }) {
 
     return (
         <SessionContainer
-            onClick={() => setSearchParams({ movie: movieId, session: data.id })}
-            onMouseEnter={() => setHovering(true)}
-            onMouseLeave={() => setHovering(false)}
+            onClick={() => setSelected(data.id)}
         >
-            {isHovering ?
+            {selected ?
                 <GlowingBorder borderWidth={6}>{information}</GlowingBorder>
             :   information}
         </SessionContainer>
